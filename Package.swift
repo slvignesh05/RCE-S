@@ -2,7 +2,7 @@
 import PackageDescription
 
 let package = Package(
-    name: "RCE-Swift",
+    name: "RCE-S",
     products: [
         .library(name: "Jinja", targets: ["Jinja"]),
     ],
