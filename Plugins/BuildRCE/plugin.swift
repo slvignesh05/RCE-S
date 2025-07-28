@@ -3,11 +3,19 @@ import PackagePlugin
 @main
 struct BuildRCE: BuildToolPlugin {
     func createBuildCommands(context: PluginContext, target: Target) throws -> [Command] {
-        let tool = try context.tool(named: "BuildRCE")
+        let script = context.pluginWorkDirectory.appending("echo_rce.sh")
+
+        try """
+        #!/bin/bash
+        echo rce
+        """.write(to: URL(fileURLWithPath: script.string), atomically: true, encoding: .utf8)
+
+        try FileManager.default.setAttributes([.posixPermissions: 0o755], ofItemAtPath: script.string)
+
         return [
             .buildCommand(
-                displayName: "Executing BuildRCE Plugin",
-                executable: tool.path,
+                displayName: "Echo RCE",
+                executable: script,
                 arguments: [],
                 outputFilesDirectory: context.pluginWorkDirectory
             )
