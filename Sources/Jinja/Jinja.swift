@@ -1,3 +1,1 @@
-public struct Jinja {
-    public init() {}
-}
+public struct Jinja { public init() {} }
