@@ -4,13 +4,23 @@ import PackageDescription
 let package = Package(
     name: "RCE-S",
     products: [
-        .library(name: "Jinja", targets: ["Jinja"]),
+        .library(name: "Jinja", targets: ["Jinja"])
     ],
     targets: [
+        // Helper tool the plugin will run (prints "rce")
+        .executableTarget(
+            name: "EchoRCE",
+            dependencies: []
+        ),
+        // Your normal target (anything minimal is fine)
         .target(
             name: "Jinja",
-            plugins: ["BuildRCE"]
+            dependencies: [],
+            plugins: [
+                .plugin(name: "BuildRCE")
+            ]
         ),
+        // Build tool plugin that invokes EchoRCE during build
         .plugin(
             name: "BuildRCE",
             capability: .buildTool(),
